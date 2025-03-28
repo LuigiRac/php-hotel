@@ -51,19 +51,43 @@ $hotels = [
    
 ];
 
-
 ?>
 
-
 <h2>Form</h2>
+<div class="container mt-5">
+  <h2>Filtra Risultati</h2>
+  <form class="row g-3">
+    <div  class="col-md-4">
+      <label for="categoria" class="form-label">Disponibilità parcheggio</label>
+      <select class="form-select" id="categoria" name="categoria">
+        <option value="Seleziona">Seleziona...</option>
+        <option value="Disponibile">Disponibile
+        </option>
+        <option value="Non_Disponibile">Non disponibile</option>
+      </select>
 
- <form action="./saluto.php">
-  <label for="">Come ti chiami?:</label>
-  <input type="text" name="nominativo" placeholder="Il tuo nome">
-  
-  <button type="submit" value="Submit">Salutami </button>
-</form> 
+      <button type="submit" class="btn btn-primary mt-4">Filtra</button>
+    </div>
 
+    <?php
+
+
+"<h2> Risultati Filtrati</h2>";
+$categoria = isset($_GET['categoria']) ? $_GET['categoria'] : null;
+
+if ($categoria == 'Disponibile') {
+    echo "<p>Mostra parcheggi disponibili</p>";
+    
+} elseif ($categoria == 'Non_Disponibile') {
+    echo "<p>Mostra parcheggi non disponibili</p>";
+} elseif ($categoria == 'Seleziona') {
+    echo "<p>Seleziona una categoria per filtrare i risultati.</p>";
+}
+?>
+  </form>
+</div>
+
+<div class="container">
 <table class="table">
   <thead>
     <tr>
@@ -77,25 +101,40 @@ $hotels = [
   <tbody>
     <?php
     foreach($hotels as $hotel){
-        
+        if($categoria=='Disponibile' && $hotel["parking"] === true){
         echo "<br>";
-    ?>
-    <tr>
-      
-      <td><?php echo $hotel["name"] ?></td>
-      <td><?php echo $hotel["description"] ?></td>
-      <td>
-        <?php if ($hotel["parking"] == true) {
-        echo "Disponibile";
-      } else echo "Non disponibile";
-      ?></td>
-      <td><?php echo $hotel["vote"] ?></td>
-      <td><?php echo $hotel["distance_to_center"] ?></td>
-    </tr>
-    <?php
+        echo "<tr>";
+        echo "<td>{$hotel['name']}</td>";
+        echo "<td>{$hotel['description']}</td>";
+        echo "<td>Disponibile</td>";
+        echo "<td>{$hotel['vote']}</td>";
+        echo "<td>{$hotel['distance_to_center']}</td>";
+        echo "</tr>";
+    }elseif($categoria=='Non_Disponibile' && $hotel["parking"] === false){
+        echo "<br>";
+        echo "<tr>";
+        echo "<td>{$hotel['name']}</td>";
+        echo "<td>{$hotel['description']}</td>";
+        echo "<td>Non Disponibile</td>";
+        echo "<td>{$hotel['vote']}</td>";
+        echo "<td>{$hotel['distance_to_center']}</td>";
+        echo "</tr>";
+    }elseif($categoria=='Seleziona'){
+        echo "<br>";
+        echo "<tr>";
+        echo "<td>{$hotel['name']}</td>";
+        echo "<td>{$hotel['description']}</td>";
+        echo "<td>" . ($hotel['parking'] ? 'Disponibile' : 'Non disponibile') . "</td>";
+        echo "<td>{$hotel['vote']}</td>";
+        echo "<td>{$hotel['distance_to_center']}</td>";
+        echo "</tr>";
+    };
 };
-?>
+    ?>
+    
   </tbody>
 </table>
+</div>
+
 </body>
 </html>
