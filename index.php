@@ -51,13 +51,51 @@ $hotels = [
    
 ];
 
-foreach($hotels as $hotel){
-    foreach ($hotel as $key => $value) {
-        echo $key . ": $value - ";
-    }
-    echo "<br>";
-};
 
 ?>
+
+
+<h2>Form</h2>
+
+ <form action="./saluto.php">
+  <label for="">Come ti chiami?:</label>
+  <input type="text" name="nominativo" placeholder="Il tuo nome">
+  
+  <button type="submit" value="Submit">Salutami </button>
+</form> 
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Nome</th>
+      <th scope="col">Descrizione</th>
+      <th scope="col">Parcheggio</th>
+      <th scope="col">Voto</th>
+      <th scope="col">Distanza dal centro</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php
+    foreach($hotels as $hotel){
+        
+        echo "<br>";
+    ?>
+    <tr>
+      
+      <td><?php echo $hotel["name"] ?></td>
+      <td><?php echo $hotel["description"] ?></td>
+      <td>
+        <?php if ($hotel["parking"] == true) {
+        echo "Disponibile";
+      } else echo "Non disponibile";
+      ?></td>
+      <td><?php echo $hotel["vote"] ?></td>
+      <td><?php echo $hotel["distance_to_center"] ?></td>
+    </tr>
+    <?php
+};
+?>
+  </tbody>
+</table>
 </body>
 </html>
